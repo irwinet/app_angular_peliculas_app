@@ -24,6 +24,10 @@ export class PeliculasService {
     }
   }
 
+  resetCarteleraPage(){
+    this.carteleraPage = 1;
+  }
+
   getCartelera(): Observable<Movie[]>{
     if(this.cargando){
       //cargando peliculas
@@ -40,6 +44,17 @@ export class PeliculasService {
         this.carteleraPage+=1;
         this.cargando = false;
       })
+    );
+  }
+
+  buscarPelicula(texto: string):Observable<Movie[]>{
+
+    const params = {...this.params, page:'1', query: texto};
+
+    return this.http.get<CarteleraResponse>(`${this.baseUrl}/search/movie`,{
+      params
+    }).pipe(
+      map((resp)=>resp.results)
     );
   }
 }
